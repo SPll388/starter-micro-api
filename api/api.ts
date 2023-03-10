@@ -63,7 +63,7 @@ export function needBals(level: number) {
     for (let i = 1; i <= level; i++) {
         if (i === 1) {}
         else if (i <= 10) {
-            result+= 300 + 700 * (i-1)
+            result+= 300 + 700 * (i-2)
         }
         else if (i <= 30) {
             result+= 5900 + 3100 * (i-10)
