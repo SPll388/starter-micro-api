@@ -38,7 +38,7 @@ export async function setData(search: Partial<User>, data: Partial<User>) {
         let query = "update users set";
 
         for (let elem in data) {
-            query+= ` ${elem}=${(typeof data[elem as keyof User] === "object" ? `ARRAY${JSON.stringify(data[elem as keyof User])}` : data[elem as keyof User])},`;
+            query+= ` ${elem}=${(typeof data[elem as keyof User] === "object" ? `ARRAY${JSON.stringify((data[elem as keyof User] as number[]).map(Number))}` : data[elem as keyof User])},`;
         }
 
         query = query.substring(0, query.length - 1) + " where";
@@ -48,6 +48,8 @@ export async function setData(search: Partial<User>, data: Partial<User>) {
         }
 
         query = query.substring(0, query.length - 1);
+
+        console.log(query)
 
         return (await client.query(query));
     } catch (e) {
@@ -66,7 +68,7 @@ export async function isAdmin(user: Partial<User>) {
 export async function addToDB(id: number, name: string, username: string) {
     if (localData.usersInDB.has(id)) return;
     try {
-        return await client.query(`insert into users (name, username, id, bals, coins, vipcoins, cards, vip, vins, packs, level, date, isadmin) values('${name}', '${username}', ${id}, 0, 0, 0, ARRAY[]::integer[], 0, 0, ARRAY[]::integer[], 0, ARRAY[]::bigint[], false)`);
+        return await client.query(`insert into users (name, username, id, bals, coins, vipcoins, cards, vip, vins, packs, level, date, isadmin) values('${name}', '${username}', ${id}, 0, 0, 0, ARRAY[]::integer[], 0, 0, ARRAY[]::integer[], 1, ARRAY[]::bigint[], false)`);
     } catch {} finally {
         localData.usersInDB.add(id);
     };
