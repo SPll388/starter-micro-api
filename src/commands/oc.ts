@@ -120,12 +120,14 @@ ${vipcoins ? `\n<i>Вы получили дополнительные ${vipcoins
     data.level+1<=40 ? 1000 :
     data.level+1<=50 ? 3000 :
     data.level+1<=60 ? 5000 : 15000} драгенКоинов 🍒`, {
-        reply_to_message_id: ctx.message.message_id
+        reply_to_message_id: ctx.message.message_id,
+        parse_mode: "HTML"
     });
                             } else {
                                 await ctx.reply(`<a href="tg://user?id=${ctx.message.from.id}"${ctx.message.from.first_name}, вы достигли следующего уровня 🧬
 Вы получили 15000 драгенКоинов 🍒 и увеличили множитель баллов в 1.2 раза 📂`, {
-        reply_to_message_id: ctx.message.message_id
+        reply_to_message_id: ctx.message.message_id,
+        parse_mode: "HTML",
     });
                             }
                         }
