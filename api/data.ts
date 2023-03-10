@@ -34,7 +34,7 @@ export const cardsForms: CardForm[] = [
             p: 0.1,
         },
         cooldown: 5,
-        level: 10,
+        level: 5,
         bx: 3,
         cx: 0.2,
         emoji: "🐟"
