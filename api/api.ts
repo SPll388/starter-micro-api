@@ -57,3 +57,25 @@ export function getEmoji(rare: Rare) {
 export function getChance(chance: Chance, rare: Rare) {
     return chance[rare];
 }
+
+export function needBals(level: number) {
+    let result = 0;
+    for (let i = 1; i <= level; i++) {
+        if (i === 1) {}
+        else if (i <= 10) {
+            result+= 300 + 700 * (i-1)
+        }
+        else if (i <= 30) {
+            result+= 5900 + 3100 * (i-10)
+        }
+        else if (i <= 50) {
+            result+= 67900 + 10000 * (i-30)
+        }
+        else if (i <= 60) {
+            result+= 267900 + 73210 * (i-50)
+        } else {
+            result+= 10000000 * (2**(i-60)-1)
+        }
+    }
+    return result;
+}

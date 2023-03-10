@@ -1,4 +1,4 @@
-import { getCard, getCardRare, getChance, getEmoji, getRare } from "../../api/api.js";
+import { getCard, getCardRare, getChance, getEmoji, getRare, needBals } from "../../api/api.js";
 import { cardsForms, localData } from "../../api/data.js";
 import { addToDB, cards, getData, isAdmin, setData } from "../../api/db.js";
 import { CmdContext } from "../../api/types.js";
@@ -109,18 +109,41 @@ ${vipcoins ? `\n<i>Вы получили дополнительные ${vipcoins
 
                         await ctx2.deleteMessage();
 
-                        const date = [0, 0, 0, 0];
+                        const date = data.date;
 
                         date[i] = Date.now();
+
+                        if (needBals(data.level)-bals>0) {
+                            if (data.level+1<=60) {
+                                await ctx.reply(`<a href="tg://user?id=${ctx.message.from.id}"${ctx.message.from.first_name}, вы достигли ${data.level+1} уровня 🧬
+Вы получили ${data.level+1<=20 ? 300 :
+    data.level+1<=40 ? 1000 :
+    data.level+1<=50 ? 3000 :
+    data.level+1<=60 ? 5000 : 15000} драгенКоинов 🍒`, {
+        reply_to_message_id: ctx.message.message_id
+    });
+                            } else {
+                                await ctx.reply(`<a href="tg://user?id=${ctx.message.from.id}"${ctx.message.from.first_name}, вы достигли следующего уровня 🧬
+Вы получили 15000 драгенКоинов 🍒 и увеличили множитель баллов в 1.2 раза 📂`, {
+        reply_to_message_id: ctx.message.message_id
+    });
+                            }
+                        }
 
                         return await setData({
                             id: ctx.message.from.id,
                         }, {
                             bals: data.bals + bals,
-                            coins: data.coins + coins-v.cost,
+                            coins: data.coins + coins-v.cost + (data.level)-bals>0 ? (
+                                data.level+1<=20 ? 300 :
+                                data.level+1<=40 ? 1000 :
+                                data.level+1<=50 ? 3000 :
+                                data.level+1<=60 ? 5000 : 15000
+                            ) : 0,
                             vipcoins: data.vipcoins + vipcoins,
                             date: date,
                             cards: Array.from(copy),
+                            level: data.level + needBals(data.level)-bals>0 ? 1 : 0,
                         })
                     });
                     return [{text: v.name + " сундук " + v.emoji, callback_data: v.name + `${ctx.message.from.id}`}];
